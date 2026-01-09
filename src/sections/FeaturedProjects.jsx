@@ -67,7 +67,7 @@ const FeaturedProjects = () => {
   };
 
   return (
-    <section id="featured-projects" className="section-container bg-dark-bg">
+    <section id="featured-projects" className="section-container bg-gray-900/20 backdrop-blur-sm">
       <div ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

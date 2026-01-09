@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FloatingParticles from './components/FloatingParticles';
 import Home from './pages/Home';
 import ITProjects from './pages/ITProjects';
 import GFXProjects from './pages/GFXProjects';
@@ -94,7 +95,8 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="flex flex-col min-h-screen">
+      <FloatingParticles />
+      <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
           <AnimatedRoutes />

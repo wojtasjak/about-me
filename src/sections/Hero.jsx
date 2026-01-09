@@ -1,8 +1,16 @@
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import FloatingParticles from '../components/FloatingParticles';
+import { useEffect, useState } from 'react';
 
 const Hero = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToProjects = () => {
     const element = document.getElementById('featured-projects');
     if (element) {
@@ -19,75 +27,90 @@ const Hero = () => {
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#1a1a3a] to-[#0a0a0a] bg-200 animate-gradient-shift z-0" />
+      {/* Gradient przechodzący z góry do przezroczystego - particles przenikają */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `linear-gradient(to bottom,
+            rgba(23, 37, 84, 0.85) 0%,
+            rgba(23, 37, 84, 0.7) 15%,
+            rgba(23, 37, 84, 0.5) 30%,
+            rgba(23, 37, 84, 0.35) 45%,
+            rgba(23, 37, 84, 0.2) 60%,
+            rgba(23, 37, 84, 0.1) 75%,
+            rgba(23, 37, 84, 0.03) 90%,
+            rgba(23, 37, 84, 0) 100%
+          )`
+        }}
+      />
 
-      {/* Floating Particles Background */}
-      <FloatingParticles />
-
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-bg/50 via-transparent to-dark-bg z-10" />
 
       {/* Content */}
       <div className="relative z-20 text-center px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          {/* Profile Image Placeholder */}
-          <div className="w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full bg-gradient-to-br from-baby-blue via-blue-400 to-blue-600 flex items-center justify-center text-6xl md:text-8xl font-bold text-dark-bg shadow-2xl glow-effect mb-8">
-            JW
-          </div>
-        </motion.div>
+        {/* Photo with parallax */}
+        <div style={{ transform: `translateY(${scrollY * 0.2}px)` }}>
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mb-8"
+          >
+            {/* Profile Image Placeholder */}
+            <div className="w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full bg-gradient-to-br from-baby-blue via-blue-400 to-blue-600 flex items-center justify-center text-6xl md:text-8xl font-bold text-dark-bg shadow-2xl glow-effect mb-8">
+              JW
+            </div>
+          </motion.div>
+        </div>
 
-        <motion.h1
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 text-shadow"
-        >
-          <span className="gradient-text">Jakub Wojtas</span>
-        </motion.h1>
+        {/* Name and roles with fastest parallax (moves up) */}
+        <div style={{ transform: `translateY(${scrollY * -0.1}px)` }}>
+          <motion.h1
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 text-shadow"
+          >
+            <span className="gradient-text">Jakub Wojtas</span>
+          </motion.h1>
 
-        {/* All roles visible at once with gradient animations */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          className="flex flex-col md:flex-row gap-4 md:gap-6 items-center justify-center text-lg md:text-xl mb-12"
-        >
-          <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 text-blue-300 animate-pulse-slow hover:scale-105 transition-transform cursor-default">
-            Data Scientist
-          </span>
+          {/* All roles visible at once with gradient animations */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="flex flex-col md:flex-row gap-4 md:gap-6 items-center justify-center text-lg md:text-xl mb-12"
+          >
+            <span className="px-6 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 text-blue-300 animate-pulse-slow hover:scale-105 transition-transform cursor-default">
+              Data Scientist
+            </span>
 
-          <span className="hidden md:block text-gray-600">•</span>
+            <span className="hidden md:block text-gray-600">•</span>
 
-          <span className="px-6 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 text-purple-300 animate-pulse-slow animation-delay-1000 hover:scale-105 transition-transform cursor-default">
-            Full-Stack Developer
-          </span>
+            <span className="px-6 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 text-purple-300 animate-pulse-slow animation-delay-1000 hover:scale-105 transition-transform cursor-default">
+              Full-Stack Developer
+            </span>
 
-          <span className="hidden md:block text-gray-600">•</span>
+            <span className="hidden md:block text-gray-600">•</span>
 
-          <span className="px-6 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 text-cyan-300 animate-pulse-slow animation-delay-2000 hover:scale-105 transition-transform cursor-default">
-            Audio Engineer
-          </span>
-        </motion.div>
+            <span className="px-6 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 text-cyan-300 animate-pulse-slow animation-delay-2000 hover:scale-105 transition-transform cursor-default">
+              Audio Engineer
+            </span>
+          </motion.div>
 
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <button onClick={scrollToProjects} className="btn-primary">
-            View Projects
-          </button>
-          <button onClick={scrollToContact} className="btn-secondary">
-            Contact Me
-          </button>
-        </motion.div>
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
+            <button onClick={scrollToProjects} className="btn-primary">
+              View Projects
+            </button>
+            <button onClick={scrollToContact} className="btn-secondary">
+              Contact Me
+            </button>
+          </motion.div>
+        </div>
       </div>
 
       {/* Scroll Indicator */}

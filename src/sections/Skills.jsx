@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
   Brain,
   Code2,
@@ -9,6 +9,7 @@ import {
   Languages,
   Users
 } from 'lucide-react';
+import SkillCard from '../components/SkillCard';
 
 const Skills = () => {
   const ref = useRef(null);
@@ -39,7 +40,7 @@ const Skills = () => {
       color: 'from-blue-500 to-purple-500',
       skills: [
         'React',
-        'JavaScript',
+        'TypeScript',
         'Vite',
         'Tailwind CSS',
         'Firebase (Auth, Firestore, Hosting)',
@@ -83,7 +84,8 @@ const Skills = () => {
       skills: [
         'Polish (Native)',
         'English (Full Professional)',
-        'Technical Documentation'
+        'German (Basic)',
+        'Italian (Beginner)'
       ]
     },
     {
@@ -99,8 +101,6 @@ const Skills = () => {
       ]
     }
   ];
-
-  const [hoveredCard, setHoveredCard] = useState(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -122,7 +122,7 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="section-container bg-dark-card/30">
+    <section id="skills" className="section-container bg-gray-900/20 backdrop-blur-sm">
       <div ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -146,60 +146,13 @@ const Skills = () => {
             <motion.div
               key={index}
               variants={itemVariants}
-              onHoverStart={() => setHoveredCard(index)}
-              onHoverEnd={() => setHoveredCard(null)}
-              whileHover={{
-                scale: 1.03,
-                rotateY: 5,
-                rotateX: 5,
-              }}
-              className="glass-card p-6 relative overflow-hidden group perspective-1000"
-              style={{
-                transformStyle: 'preserve-3d',
-              }}
             >
-              {/* Gradient Background */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+              <SkillCard
+                title={category.title}
+                icon={category.icon}
+                technologies={category.skills}
+                color={category.color}
               />
-
-              {/* Border Glow */}
-              <div
-                className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`}
-              />
-
-              <div className="relative z-10">
-                {/* Icon */}
-                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br ${category.color} text-white mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
-                  {category.icon}
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold mb-4 text-text-primary group-hover:text-baby-blue transition-colors duration-300">
-                  {category.title}
-                </h3>
-
-                {/* Skills List */}
-                <div className="space-y-2">
-                  {category.skills.map((skill, skillIndex) => (
-                    <motion.div
-                      key={skillIndex}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={isInView ? { opacity: 1, x: 0 } : {}}
-                      transition={{
-                        duration: 0.3,
-                        delay: hoveredCard === index ? skillIndex * 0.05 : 0
-                      }}
-                      className="flex items-center space-x-2"
-                    >
-                      <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${category.color}`} />
-                      <span className="text-sm text-text-secondary group-hover:text-text-primary transition-colors duration-300">
-                        {skill}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
             </motion.div>
           ))}
         </motion.div>

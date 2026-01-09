@@ -22,7 +22,7 @@ export default function FloatingParticles() {
     // Initialize particles - FUNCTION DECLARED BEFORE USE
     const createParticles = () => {
       const particles = [];
-      const particleCount = Math.floor((canvas.width * canvas.height) / 10000);
+      const particleCount = Math.floor((canvas.width * canvas.height) / 8000);
 
       for (let i = 0; i < particleCount; i++) {
         particles.push({
@@ -95,7 +95,7 @@ export default function FloatingParticles() {
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(178, 217, 255, ${particle.opacity})`;
+        ctx.fillStyle = `rgba(178, 217, 255, ${particle.opacity * 1.5})`;
         ctx.fill();
 
         // Draw connections
@@ -137,7 +137,14 @@ export default function FloatingParticles() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 -z-10 pointer-events-none bg-transparent"
+      className="fixed inset-0 -z-10 pointer-events-none"
+      style={{
+        width: '100vw',
+        height: '100vh',
+        position: 'fixed',
+        top: 0,
+        left: 0
+      }}
     />
   );
 }

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { GraduationCap, TrendingUp, Code, Award } from 'lucide-react';
+import StatCard from '../components/StatCard';
 
 const About = () => {
   const ref = useRef(null);
@@ -22,48 +23,8 @@ const About = () => {
     },
   ];
 
-  const stats = [
-    {
-      icon: <Code className="w-8 h-8" />,
-      value: '10+',
-      label: 'Projects Completed',
-      color: 'from-baby-blue to-blue-400',
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      value: '20+',
-      label: 'Technologies Mastered',
-      color: 'from-blue-400 to-purple-400',
-    },
-    {
-      icon: <Award className="w-8 h-8" />,
-      value: '3+',
-      label: 'Years of Experience',
-      color: 'from-purple-400 to-pink-400',
-    },
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5 },
-    },
-  };
-
   return (
-    <section id="about" className="section-container bg-dark-bg">
+    <section id="about" className="section-container bg-transparent">
       <div ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -137,35 +98,27 @@ const About = () => {
           </motion.div>
         </div>
 
-        {/* Statistics */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-        >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="glass-card p-8 text-center relative overflow-hidden group"
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
-              <div className="relative z-10">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-baby-blue/10 text-baby-blue mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {stat.icon}
-                </div>
-                <div className="text-4xl font-bold mb-2 gradient-text">
-                  {stat.value}
-                </div>
-                <div className="text-text-secondary font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Statistics with Animated Counters */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <StatCard
+            end={10}
+            label="Projects Completed"
+            icon={<Code className="w-8 h-8" />}
+            color="from-baby-blue to-blue-400"
+          />
+          <StatCard
+            end={20}
+            label="Technologies Mastered"
+            icon={<TrendingUp className="w-8 h-8" />}
+            color="from-blue-400 to-purple-400"
+          />
+          <StatCard
+            end={3}
+            label="Years of Experience"
+            icon={<Award className="w-8 h-8" />}
+            color="from-purple-400 to-pink-400"
+          />
+        </div>
       </div>
     </section>
   );
